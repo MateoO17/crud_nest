@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -21,30 +22,30 @@ export class TaskController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Task> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Task> {
     return this.taskService.findOne(id);
   }
 
   @Post()
   create(@Body() body: CreateTaskDto): Promise<Task> {
-    return this.taskService.create(body);
+    return this.taskService.createTask(body);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() body: CreateTaskDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() body: CreateTaskDto) {
     return this.taskService.update(id, body);
   }
 
   @Put('status/:id')
   updateStatus(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateStatusTaskDto,
   ): Promise<Task> {
     return this.taskService.updateStatus(id, body);
   }
 
   @Delete('id')
-  delete(@Param('id') id: number): Promise<void> {
+  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.taskService.delete(id);
   }
 }
